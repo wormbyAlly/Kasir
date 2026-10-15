@@ -4,79 +4,143 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kasir Sederhana — Armeria Fiktif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="bar">
-  <div class="brand">Armeria Fiktif<small>Kasir sederhana · data demonstrasi</small></div>
+  <div class="brand">
+    <span class="brand-icon" aria-hidden="true">🎯</span>
+    <div>
+      <span class="brand-title">Armeria Fiktif</span>
+      <small>Kasir Ramah & Sederhana · Data Demonstrasi</small>
+    </div>
+  </div>
   <nav id="nav" aria-label="Menu utama">
-    <button data-view="dashboard" class="on">Dashboard</button>
-    <button data-view="pos">Kasir</button>
-    <button data-view="riwayat">Riwayat</button>
+    <button data-view="dashboard" class="on"><span class="nav-icon" aria-hidden="true">📊</span> Dashboard</button>
+    <button data-view="pos"><span class="nav-icon" aria-hidden="true">🛒</span> Kasir</button>
+    <button data-view="riwayat"><span class="nav-icon" aria-hidden="true">📜</span> Riwayat</button>
   </nav>
 </header>
 
 <main>
   <!-- View 1: Dashboard -->
   <section id="dashboard" class="view on">
-    <h1>Ringkasan penjualan</h1>
-    <div class="ledger">
-      <div><span>Total penjualan</span><b id="stTotal">Rp 0</b></div>
-      <div><span>Jumlah transaksi</span><b id="stJumlah">0</b></div>
+    <div class="page-header">
+      <h1>Ringkasan Penjualan ✨</h1>
+      <p class="subtitle">Pantau performa transaksi kasir tokomu hari ini</p>
     </div>
-    <p class="hint">Data tersimpan di browser ini saja dan tidak tersinkronisasi antar perangkat.</p>
-    <button class="btn primary" data-goto="pos">Mulai transaksi</button>
+    <div class="ledger">
+      <div class="stat-card stat-sales">
+        <div class="stat-header">
+          <span class="stat-label">Total Penjualan</span>
+          <span class="stat-badge">💰 Rupiah</span>
+        </div>
+        <b id="stTotal">Rp 0</b>
+        <span class="stat-sub">Akumulasi seluruh transaksi sukses</span>
+      </div>
+      <div class="stat-card stat-orders">
+        <div class="stat-header">
+          <span class="stat-label">Jumlah Transaksi</span>
+          <span class="stat-badge">🧾 Selesai</span>
+        </div>
+        <b id="stJumlah">0</b>
+        <span class="stat-sub">Total struk yang telah diterbitkan</span>
+      </div>
+    </div>
+    <div class="dashboard-footer">
+      <div class="hint-card">
+        <span class="hint-icon" aria-hidden="true">💡</span>
+        <p class="hint">Data tersimpan aman di browser lokal (localStorage) dan tidak tersinkronisasi ke server eksternal.</p>
+      </div>
+      <button class="btn primary cta-btn" data-goto="pos">Mulai Transaksi Kasir ➔</button>
+    </div>
   </section>
 
   <!-- View 2: Kasir -->
   <section id="pos" class="view">
     <div class="pos">
       <div class="catalog">
-        <h1>Katalog produk</h1>
-        <input id="cari" type="search" placeholder="Cari nama atau kode produk" aria-label="Cari produk" autocomplete="off">
+        <div class="catalog-header">
+          <div>
+            <h1>Katalog Produk 📦</h1>
+            <p class="subtitle">Pilih item untuk dimasukkan ke keranjang belanja</p>
+          </div>
+          <div class="search-box">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input id="cari" type="search" placeholder="Cari nama atau kode produk..." aria-label="Cari produk" autocomplete="off">
+          </div>
+        </div>
         <div id="grid" class="grid"></div>
       </div>
 
       <aside class="cart" aria-label="Keranjang">
-        <h2>Keranjang</h2>
+        <div class="cart-header">
+          <h2>Keranjang Belanja 🛍️</h2>
+          <span class="cart-pill" id="cartPill">Item</span>
+        </div>
         <div id="cartList" class="cart-list"></div>
-        <div class="total"><span>Total</span><b id="cartTotal">Rp 0</b></div>
-        <button id="btnBayar" class="btn primary wide" disabled>Bayar</button>
+        <div class="cart-footer">
+          <div class="total">
+            <span>Total Belanja:</span>
+            <b id="cartTotal">Rp 0</b>
+          </div>
+          <button id="btnBayar" class="btn primary wide" disabled>Lanjut ke Pembayaran 💳</button>
+        </div>
       </aside>
     </div>
   </section>
 
   <!-- View 3: Riwayat -->
   <section id="riwayat" class="view">
-    <h1>Riwayat transaksi</h1>
-    <div id="riwayatBox"></div>
+    <div class="page-header">
+      <h1>Riwayat Transaksi 📜</h1>
+      <p class="subtitle">Daftar rekapan transaksi yang telah disimpan di sistem lokal</p>
+    </div>
+    <div id="riwayatBox" class="riwayat-container"></div>
   </section>
 </main>
 
 <!-- Modal pembayaran -->
 <dialog id="dlgBayar">
   <form method="dialog" id="formBayar">
-    <h2>Pembayaran tunai</h2>
-    <div class="r big"><span>Total belanja</span><b id="payTotal">Rp 0</b></div>
-    <label for="uang">Uang diterima (Rp)</label>
-    <input id="uang" inputmode="numeric" autocomplete="off" placeholder="0">
-    <div class="r"><span>Kembalian</span><b id="payKembali">Rp 0</b></div>
+    <div class="dialog-header">
+      <h2>Pembayaran Tunai 💵</h2>
+      <p class="dialog-sub">Masukkan nominal uang tunai yang diterima dari pembeli</p>
+    </div>
+    <div class="r big pay-card">
+      <span>Total yang Harus Dibayar</span>
+      <b id="payTotal">Rp 0</b>
+    </div>
+    <div class="input-group">
+      <label for="uang">Uang Diterima (Rp)</label>
+      <input id="uang" inputmode="numeric" autocomplete="off" placeholder="0">
+    </div>
+    <div class="r kembalian-card">
+      <span>Uang Kembalian</span>
+      <b id="payKembali">Rp 0</b>
+    </div>
     <p id="payError" class="error" role="alert"></p>
     <div class="actions">
       <button type="button" class="btn" id="btnBatal">Batal</button>
-      <button type="submit" class="btn primary" id="btnSelesai" disabled>Selesaikan transaksi</button>
+      <button type="submit" class="btn primary" id="btnSelesai" disabled>Selesaikan Transaksi ✓</button>
     </div>
   </form>
 </dialog>
 
 <!-- Modal struk / detail transaksi -->
 <dialog id="dlgStruk">
-  <h2 class="noprint" id="strukJudul">Transaksi selesai</h2>
+  <div class="dialog-header noprint">
+    <h2 id="strukJudul">Transaksi Selesai 🎉</h2>
+    <p class="dialog-sub">Struk format thermal siap dicetak untuk pelanggan</p>
+  </div>
   <div id="strukBox"></div>
   <div class="actions noprint">
     <button type="button" class="btn" id="btnTutup">Tutup</button>
-    <button type="button" class="btn primary" id="btnCetak">Cetak struk</button>
+    <button type="button" class="btn primary" id="btnCetak">Cetak Struk 🖨️</button>
   </div>
 </dialog>
 
